@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+
+# VS code
+.vscode
+
+# Typescript
+typings
+node_modules
+webpack.statistics.*
+dist
+.tmp
+
+
+
+
+
+

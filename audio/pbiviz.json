@@ -1,0 +1,26 @@
+{
+  "visual": {
+    "name": "pbi_audio",
+    "displayName": "pbi_audio",
+    "guid": "audio981230D3547942068B34C442295625F2",
+    "visualClassName": "Visual",
+    "version": "1.0.0.0",
+    "description": "",
+    "supportUrl": "",
+    "gitHubUrl": "https://github.com/Grognard-Digital-Solutions/pbi_audio"
+  },
+  "apiVersion": "5.3.0",
+  "author": {
+    "name": "Alexander Gullen",
+    "email": "Alexander.Gullen@grognard.ca"
+  },
+  "assets": {
+    "icon": "assets/icon.png"
+  },
+  "externalJS": null,
+  "style": "style/visual.less",
+  "capabilities": "capabilities.json",
+  "dependencies": null,
+  "stringResources": [],
+  "version": "1.0.0.0"
+}
