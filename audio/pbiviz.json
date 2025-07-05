@@ -5,8 +5,8 @@
     "guid": "audio981230D3547942068B34C442295625F2",
     "visualClassName": "Visual",
     "version": "1.0.0.0",
-    "description": "",
-    "supportUrl": "",
+    "description": "simple audio player for Power BI",
+    "supportUrl": "https://github.com/Grognard-Digital-Solutions/pbi_audio",
     "gitHubUrl": "https://github.com/Grognard-Digital-Solutions/pbi_audio"
   },
   "apiVersion": "5.3.0",
