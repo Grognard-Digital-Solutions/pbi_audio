@@ -37,22 +37,24 @@ export class Visual implements IVisual {
       if (document) {
         this.audio = document.createElement("audio");
         this.audio.src = "https://grognard.ca/assets/data/audio.wav";
-        this.audio.crossOrigin = "anonymous"
-        
-        this.audioContext = new AudioContext()
-        
-        this.track = this.audioContext.createMediaElementSource(this.audio)
+        this.audio.crossOrigin = "anonymous";
+
+        this.audioContext = new AudioContext();
+
+        this.track = this.audioContext.createMediaElementSource(this.audio);
 
         this.gainNode = this.audioContext.createGain();
-        this.track.connect(this.gainNode).connect(this.audioContext.destination)
+        this.track
+          .connect(this.gainNode)
+          .connect(this.audioContext.destination);
 
         this.target.append(() => this.audio);
 
-        let message = document.createElement("p")
-        
+        let message = document.createElement("p");
+
         message.innerText = `${this.localizationManager.getDisplayName(
-        "displayMessage"
-        )}`
+          "displayMessage",
+        )}`;
 
         message.innerHTML = `<div class="tooltip">
   <p>A lot can happen in 10 years…</p>
@@ -63,50 +65,51 @@ export class Visual implements IVisual {
   </filter>
   <path d="M2 1L8 5L2 9" filter="url(#shadow)"/>
 </svg>
-</div>`
+</div>`;
 
-        this.target.append(() => message)
+        this.target.append(() => message);
       }
     } catch (e) {
-      this.visualUpdateOptions.host.displayWarningIcon("Construction Error","Failed to build loudspeaker")
+      this.visualUpdateOptions.host.displayWarningIcon(
+        "Construction Error",
+        "Failed to build loudspeaker",
+      );
     }
   }
 
   public update(options: VisualUpdateOptions) {
-
-    try{
-
-      var volume: number = parseFloat(options.dataViews[0].single.value.toString())
+    try {
+      var volume: number = parseFloat(
+        options.dataViews[0].single.value.toString(),
+      );
 
       if (volume > 100) {
-          volume = 100
+        volume = 100;
       }
 
       //use linear mapping to adjust the volume to a range between 0 and 2
-      this.gainNode.gain.value = 0//volume * 0.02
-    
-      this.play()
+      this.gainNode.gain.value = volume * 0.02;
 
-      this.audio.play()
+      this.play();
 
-    } catch (e){
-      this.visualUpdateOptions.host.displayWarningIcon("Runtime Error","Something went wrong running loudspeaker")
+      this.audio.play();
+    } catch (e) {
+      this.visualUpdateOptions.host.displayWarningIcon(
+        "Runtime Error",
+        "Something went wrong running loudspeaker",
+      );
     }
-
   }
 
-  public play(){
-
-    if(this.gainNode.gain.value === 0){
-      this.audioContext.suspend()
-    }else if(this.audioContext.state === "suspended"){
-      this.audioContext.resume()
-    }else if(this.audioContext.state === "running"){
-
-    }else{
-      this.audio.play()
+  public play() {
+    if (this.gainNode.gain.value === 0) {
+      this.audioContext.suspend();
+    } else if (this.audioContext.state === "suspended") {
+      this.audioContext.resume();
+    } else if (this.audioContext.state === "running") {
+    } else {
+      this.audio.play();
     }
-    
   }
 
   /**
