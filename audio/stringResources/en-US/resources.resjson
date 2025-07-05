@@ -1,3 +1,6 @@
 {
-    "displayMessage":"A lot can happen in 10 years… try moving the slicer to see how much :)"
+    "volume":"Volume",
+    "displayMessage":"A lot can happen in 10 years… try moving the slicer to see how much :)",
+    "audio_switch":"Audio ON/OFF",
+    "audio_switch_description":"When set to 'on' the audio from this visual will play by default, setting it to 'off' will pause the audio."
 }

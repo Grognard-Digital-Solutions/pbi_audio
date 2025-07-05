@@ -10,6 +10,7 @@ import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import IVisual = powerbi.extensibility.visual.IVisual;
 
 import { VisualFormattingSettingsModel } from "./settings";
+import { LocalizationService } from "./features/LocalizationService";
 
 export class Visual implements IVisual {
   private target: d3.Selection<any, any, any, any>;
@@ -29,7 +30,8 @@ export class Visual implements IVisual {
 
   constructor(options: powerbi.extensibility.visual.VisualConstructorOptions) {
     try {
-      this.localizationManager = options.host.createLocalizationManager();
+      LocalizationService.bind(options);
+
       this.target = d3.select(options.element);
       this.visualUpdateOptions = options;
       this.formattingSettingsService = new FormattingSettingsService();
@@ -79,6 +81,12 @@ export class Visual implements IVisual {
 
   public update(options: VisualUpdateOptions) {
     try {
+      this.formattingSettings =
+        this.formattingSettingsService.populateFormattingSettingsModel(
+          VisualFormattingSettingsModel,
+          options.dataViews[0],
+        );
+
       var volume: number = parseFloat(
         options.dataViews[0].single.value.toString(),
       );
@@ -102,13 +110,19 @@ export class Visual implements IVisual {
   }
 
   public play() {
-    if (this.gainNode.gain.value === 0) {
+    console.log(this.formattingSettings.audio_settings.audio_switch.value);
+
+    if (this.formattingSettings.audio_settings.audio_switch.value === false) {
       this.audioContext.suspend();
-    } else if (this.audioContext.state === "suspended") {
-      this.audioContext.resume();
-    } else if (this.audioContext.state === "running") {
     } else {
-      this.audio.play();
+      if (this.gainNode.gain.value === 0) {
+        this.audioContext.suspend();
+      } else if (this.audioContext.state === "suspended") {
+        this.audioContext.resume();
+      } else if (this.audioContext.state === "running") {
+      } else {
+        this.audio.play();
+      }
     }
   }
 
@@ -117,8 +131,10 @@ export class Visual implements IVisual {
    * This method is called once every time we open properties pane or when the user edit any format property.
    */
   public getFormattingModel(): powerbi.visuals.FormattingModel {
-    return this.formattingSettingsService.buildFormattingModel(
+    const model = this.formattingSettingsService.buildFormattingModel(
       this.formattingSettings,
     );
+
+    return model;
   }
 }
