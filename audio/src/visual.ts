@@ -86,9 +86,6 @@ export class Visual implements IVisual {
 
       if (volume >= 100) {
         volume = 100;
-      }
-
-      if (volume > 10) {
         this.message.innerHTML = this.formatMessage(
           getLocalizationManager().getDisplayName("header_message_2"),
           getLocalizationManager().getDisplayName("body_message_2")

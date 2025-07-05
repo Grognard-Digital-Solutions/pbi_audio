@@ -2,12 +2,16 @@
   "dataRoles": [
     {
       "displayName": "Volume",
+<<<<<<< HEAD
       "displayNameKey": "volume",
+=======
+>>>>>>> 386dbbd693e48eabf9bdb169a932ac7d7027e761
       "name": "volume",
       "kind": "Measure"
     }
   ],
   "objects": {
+<<<<<<< HEAD
     "object_audio": {
       "properties": {
         "audio_switch": {
@@ -25,11 +29,24 @@
           "volume": {
             "max": 1
           }
+=======
+  },
+  "dataViewMappings": [
+   {
+    "conditions": [
+      {
+        "volume": {
+          "max": 1
+>>>>>>> 386dbbd693e48eabf9bdb169a932ac7d7027e761
         }
       ],
       "single": {
         "role": "volume"
       }
+    ],
+    "single": {
+      "role": "volume"
+    }
    }
   ],
   "privileges": [
