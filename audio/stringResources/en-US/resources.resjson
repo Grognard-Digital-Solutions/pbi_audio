@@ -1,6 +1,13 @@
 {
     "volume":"Volume",
-    "displayMessage":"A lot can happen in 10 years… try moving the slicer to see how much :)",
+    "header_message_1":"A lot can happen in 10 years…",
+    "body_message_1":"try moving the slicer to see how much",
+    "header_message_2":"Thanks for 10 Years of visulizing the possible.",
+    "body_message_2":"❤️",
     "audio_switch":"Audio ON/OFF",
-    "audio_switch_description":"When set to 'on' the audio from this visual will play by default, setting it to 'off' will pause the audio."
+    "audio_switch_description":"When set to 'on' the audio from this visual will play by default, setting it to 'off' will pause the audio.",
+    "generic_construction_error_header":"Construction Error",
+    "generic_construction_error":"Failed to build loudspeaker",
+    "generic_runtime_error_header":"Runtime Error",
+    "generic_runtime_error":"Something went wrong running loudspeaker"
 }

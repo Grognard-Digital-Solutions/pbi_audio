@@ -10,17 +10,17 @@ import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import IVisual = powerbi.extensibility.visual.IVisual;
 
 import { VisualFormattingSettingsModel } from "./settings";
-import { LocalizationService } from "./features/LocalizationService";
+import { getLocalizationManager, LocalizationService } from "./features/LocalizationService";
 
 export class Visual implements IVisual {
   private target: d3.Selection<any, any, any, any>;
+
+  private message: HTMLParagraphElement;
 
   private visualUpdateOptions: powerbi.extensibility.visual.VisualConstructorOptions;
 
   private formattingSettings: VisualFormattingSettingsModel;
   private formattingSettingsService: FormattingSettingsService;
-
-  private localizationManager: powerbi.extensibility.ILocalizationManager;
 
   private audio: HTMLAudioElement;
   private audioContext: AudioContext;
@@ -30,15 +30,16 @@ export class Visual implements IVisual {
 
   constructor(options: powerbi.extensibility.visual.VisualConstructorOptions) {
     try {
-      LocalizationService.bind(options);
+      
 
       this.target = d3.select(options.element);
       this.visualUpdateOptions = options;
+      LocalizationService.bind(this.visualUpdateOptions);
       this.formattingSettingsService = new FormattingSettingsService();
 
       if (document) {
         this.audio = document.createElement("audio");
-        this.audio.src = "https://grognard.ca/assets/data/audio.wav";
+        this.audio.src = "https://grognard.ca/assets/data/FabricCommunityContests/audio.wav";
         this.audio.crossOrigin = "anonymous";
 
         this.audioContext = new AudioContext();
@@ -52,32 +53,24 @@ export class Visual implements IVisual {
 
         this.target.append(() => this.audio);
 
-        let message = document.createElement("p");
+        this.message = document.createElement("p");
 
-        message.innerText = `${this.localizationManager.getDisplayName(
-          "displayMessage",
-        )}`;
+        this.message.innerHTML = this.formatMessage(
+          getLocalizationManager().getDisplayName("header_message_1"),
+          getLocalizationManager().getDisplayName("body_message_1")
+        );
 
-        message.innerHTML = `<div class="tooltip">
-  <p>A lot can happen in 10 years…</p>
-  <p>try moving the slicer to see how much</p>
-  <svg role="presentation" viewbox="0 0 12 16">
-<filter id="shadow" color-interpolation-filters="sRGB">
-  <feDropShadow dx="1" dy="0" stdDeviation="0.5" flood-opacity="0.6"/>
-  </filter>
-  <path d="M2 1L8 5L2 9" filter="url(#shadow)"/>
-</svg>
-</div>`;
-
-        this.target.append(() => message);
+        this.target.append(() => this.message);
       }
     } catch (e) {
       this.visualUpdateOptions.host.displayWarningIcon(
-        "Construction Error",
-        "Failed to build loudspeaker",
+        getLocalizationManager().getDisplayName("generic_construction_error_hero"),
+        getLocalizationManager().getDisplayName("generic_construction_error"),
       );
     }
   }
+
+
 
   public update(options: VisualUpdateOptions) {
     try {
@@ -91,8 +84,15 @@ export class Visual implements IVisual {
         options.dataViews[0].single.value.toString(),
       );
 
-      if (volume > 100) {
+      if (volume >= 100) {
         volume = 100;
+      }
+
+      if (volume > 10) {
+        this.message.innerHTML = this.formatMessage(
+          getLocalizationManager().getDisplayName("header_message_2"),
+          getLocalizationManager().getDisplayName("body_message_2")
+        )
       }
 
       //use linear mapping to adjust the volume to a range between 0 and 2
@@ -100,18 +100,29 @@ export class Visual implements IVisual {
 
       this.play();
 
-      this.audio.play();
     } catch (e) {
       this.visualUpdateOptions.host.displayWarningIcon(
-        "Runtime Error",
-        "Something went wrong running loudspeaker",
+        getLocalizationManager().getDisplayName("generic_runtime_error_header"),
+        getLocalizationManager().getDisplayName("generic_runtime_error"),
       );
     }
   }
 
-  public play() {
-    console.log(this.formattingSettings.audio_settings.audio_switch.value);
 
+  public formatMessage(header,body){
+    return `<div class="tooltip">
+  <p>${header}</p>
+  <p>${body}</p>
+  <svg role="presentation" viewbox="0 0 12 16">
+<filter id="shadow" color-interpolation-filters="sRGB">
+  <feDropShadow dx="1" dy="0" stdDeviation="0.5" flood-opacity="0.6"/>
+  </filter>
+  <path d="M2 1L8 5L2 9" filter="url(#shadow)"/>
+</svg>
+</div>`
+  }
+
+  public play() {
     if (this.formattingSettings.audio_settings.audio_switch.value === false) {
       this.audioContext.suspend();
     } else {
@@ -120,6 +131,7 @@ export class Visual implements IVisual {
       } else if (this.audioContext.state === "suspended") {
         this.audioContext.resume();
       } else if (this.audioContext.state === "running") {
+        this.audio.play()
       } else {
         this.audio.play();
       }
