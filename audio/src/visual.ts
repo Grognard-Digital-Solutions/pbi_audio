@@ -10,7 +10,10 @@ import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import IVisual = powerbi.extensibility.visual.IVisual;
 
 import { VisualFormattingSettingsModel } from "./settings";
-import { getLocalizationManager, LocalizationService } from "./features/LocalizationService";
+import {
+  getLocalizationManager,
+  LocalizationService,
+} from "./features/LocalizationService";
 
 export class Visual implements IVisual {
   private target: d3.Selection<any, any, any, any>;
@@ -30,8 +33,6 @@ export class Visual implements IVisual {
 
   constructor(options: powerbi.extensibility.visual.VisualConstructorOptions) {
     try {
-      
-
       this.target = d3.select(options.element);
       this.visualUpdateOptions = options;
       LocalizationService.bind(this.visualUpdateOptions);
@@ -39,7 +40,8 @@ export class Visual implements IVisual {
 
       if (document) {
         this.audio = document.createElement("audio");
-        this.audio.src = "https://grognard.ca/assets/data/FabricCommunityContests/audio.wav";
+        this.audio.src =
+          "https://grognard.ca/assets/data/FabricCommunityContests/audio.wav";
         this.audio.crossOrigin = "anonymous";
 
         this.audioContext = new AudioContext();
@@ -57,20 +59,20 @@ export class Visual implements IVisual {
 
         this.message.innerHTML = this.formatMessage(
           getLocalizationManager().getDisplayName("header_message_1"),
-          getLocalizationManager().getDisplayName("body_message_1")
+          getLocalizationManager().getDisplayName("body_message_1"),
         );
 
         this.target.append(() => this.message);
       }
     } catch (e) {
       this.visualUpdateOptions.host.displayWarningIcon(
-        getLocalizationManager().getDisplayName("generic_construction_error_hero"),
+        getLocalizationManager().getDisplayName(
+          "generic_construction_error_hero",
+        ),
         getLocalizationManager().getDisplayName("generic_construction_error"),
       );
     }
   }
-
-
 
   public update(options: VisualUpdateOptions) {
     try {
@@ -88,15 +90,14 @@ export class Visual implements IVisual {
         volume = 100;
         this.message.innerHTML = this.formatMessage(
           getLocalizationManager().getDisplayName("header_message_2"),
-          getLocalizationManager().getDisplayName("body_message_2")
-        )
+          getLocalizationManager().getDisplayName("body_message_2"),
+        );
       }
 
       //use linear mapping to adjust the volume to a range between 0 and 2
       this.gainNode.gain.value = volume * 0.02;
 
       this.play();
-
     } catch (e) {
       this.visualUpdateOptions.host.displayWarningIcon(
         getLocalizationManager().getDisplayName("generic_runtime_error_header"),
@@ -105,8 +106,7 @@ export class Visual implements IVisual {
     }
   }
 
-
-  public formatMessage(header,body){
+  public formatMessage(header, body) {
     return `<div class="tooltip">
   <p>${header}</p>
   <p>${body}</p>
@@ -116,7 +116,7 @@ export class Visual implements IVisual {
   </filter>
   <path d="M2 1L8 5L2 9" filter="url(#shadow)"/>
 </svg>
-</div>`
+</div>`;
   }
 
   public play() {
@@ -128,7 +128,7 @@ export class Visual implements IVisual {
       } else if (this.audioContext.state === "suspended") {
         this.audioContext.resume();
       } else if (this.audioContext.state === "running") {
-        this.audio.play()
+        this.audio.play();
       } else {
         this.audio.play();
       }
