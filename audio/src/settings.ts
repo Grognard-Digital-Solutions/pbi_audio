@@ -10,8 +10,8 @@ export class VisualFormattingSettingsModel extends formattingSettings.Model {
 
 export class AudioSettings extends formattingSettings.CompositeCard {
   name = "object_audio";
-  displayName =  "Audio Settings"
-  displayNameKey = "object_audio"
+  displayName = "Audio Settings";
+  displayNameKey = "object_audio";
 
   audio_switch = new formattingSettings.ToggleSwitch({
     name: "audio_switch",
