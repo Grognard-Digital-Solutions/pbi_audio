@@ -4,7 +4,7 @@
     "displayName": "pbi_audio",
     "guid": "audio981230D3547942068B34C442295625F2",
     "visualClassName": "Visual",
-    "version": "1.0.0.0",
+    "version": "1.0.1.0",
     "description": "simple audio player for Power BI",
     "supportUrl": "https://github.com/Grognard-Digital-Solutions/pbi_audio",
     "gitHubUrl": "https://github.com/Grognard-Digital-Solutions/pbi_audio"
@@ -22,5 +22,5 @@
   "capabilities": "capabilities.json",
   "dependencies": null,
   "stringResources": [],
-  "version": "1.0.0.0"
+  "version": "1.0.1.0"
 }
